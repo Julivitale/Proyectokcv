@@ -1,5 +1,5 @@
 //Array de productos
-const products = [
+/* const products = [
   {
     id: 1,
     collection: "cursodeingenieria",
@@ -75,7 +75,7 @@ const products = [
     stock: 20,
     sells: 17
   }
-]
+] */
 
 //Div Botones
 const divButton = document.createElement('div')
@@ -100,7 +100,7 @@ divButton.append(cartP)
 const Ingeniería = document.createElement("button")
 Ingeniería.innerText = 'Ingeniería'
 Ingeniería.setAttribute('class', 'btn')
-Ingeniería.setAttribute('onclick', 'selectLicence("Ingeniería")')
+Ingeniería.setAttribute('onclick', 'selectLicence("ingeniería")')
 divButton.append(Ingeniería)
 
 
@@ -108,7 +108,7 @@ divButton.append(Ingeniería)
 const Gestión = document.createElement("button")
 Gestión.innerText = 'Gestión'
 Gestión.setAttribute('class', 'btn')
-Gestión.setAttribute('onclick', 'selectLicence("Gestión")')
+Gestión.setAttribute('onclick', 'selectLicence("gestión")')
 divButton.append(Gestión)
 
 
@@ -116,7 +116,7 @@ divButton.append(Gestión)
 const Excel = document.createElement("button")
 Excel.innerText = 'Excel'
 Excel.setAttribute('class', 'btn')
-Excel.setAttribute('onclick', 'selectLicence("Excel")')
+Excel.setAttribute('onclick', 'selectLicence("excel")')
 divButton.append(Excel)
 
 //Input
@@ -131,22 +131,24 @@ entrada.setAttribute('placeholder', 'Buscar...')
 label.append(entrada)
 entrada.addEventListener("input", buscador)
 
-function buscador() {
+async function buscador() {
+  let products = await fetch('https://neon-efficient-bosworth.glitch.me/products')
+  products = await products.json()
   const search = products.filter(product => product.name.toLowerCase().includes(entrada.value))
   allProducts(search)
 }
 
 
 //Carrito
-let cart = JSON.parse(localStorage.getItem('carrito'))?.length > 0 ? JSON.parse(localStorage.getItem('carrito')): []
+let cart = JSON.parse(localStorage.getItem('carrito'))?.length > 0 ? JSON.parse(localStorage.getItem('carrito')) : []
 
-JSON.parse(localStorage.getItem('carrito'))?.length > 0 ? JSON.parse(localStorage.getItem('carrito')): localStorage.setItem('carrito', JSON.stringify(cart))
+JSON.parse(localStorage.getItem('carrito'))?.length > 0 ? JSON.parse(localStorage.getItem('carrito')) : localStorage.setItem('carrito', JSON.stringify(cart))
 
-let filtros = JSON.parse(localStorage.getItem('filtros'))?.length > 0 ? JSON.parse(localStorage.getItem('filtros')): []
-JSON.parse(localStorage.getItem('filtros'))?.length > 0 ? JSON.parse(localStorage.getItem('filtros')): localStorage.setItem('filtros', JSON.stringify(cart))
+let filtros = JSON.parse(localStorage.getItem('filtros'))?.length > 0 ? JSON.parse(localStorage.getItem('filtros')) : []
+JSON.parse(localStorage.getItem('filtros'))?.length > 0 ? JSON.parse(localStorage.getItem('filtros')) : localStorage.setItem('filtros', JSON.stringify(cart))
 
-let pagina = localStorage.getItem('page')?.length > 0 ? localStorage.getItem('page'): 'home'
-localStorage.getItem('page')?.length > 0 ? localStorage.getItem('page'): localStorage.setItem('page', (pagina))
+let pagina = localStorage.getItem('page')?.length > 0 ? localStorage.getItem('page') : 'home'
+localStorage.getItem('page')?.length > 0 ? localStorage.getItem('page') : localStorage.setItem('page', (pagina))
 
 
 //Div del bodys
@@ -160,85 +162,95 @@ divBody.append(ul)
 ul.setAttribute('class', 'ullkcv')
 
 //Agregar elementos a la lista
-
-function allProducts(productos){
-    ul.remove();
-    ul = document.createElement('ul')
-    divBody.append(ul)
-    ul.setAttribute('class', 'ullkcv')
-    for (const product of productos) {
-        let li = document.createElement('li')
-        li.innerHTML =
-        `<h3>${product.name}<h3/>
+function allProducts(productos) {
+  ul.remove();
+  ul = document.createElement('ul')
+  divBody.append(ul)
+  ul.setAttribute('class', 'ullkcv')
+  for (const product of productos) {
+    let li = document.createElement('li')
+    li.innerHTML =
+      `<h3>${product.name}<h3/>
          <img src="${product.img.front}" alt="${product.name}" />
          <p>${product.description}</P>
                   <p class="precio">Precio $${product.price}</p>
                   <button id=${product.id} class="buttonag" onclick=agregar(${product.id}) >Agregar</button>`
-        ul.append(li)
-        li.setAttribute('id', `${product.id}`)
-        li.setAttribute('class', 'class=card')
-    }
+    ul.append(li)
+    li.setAttribute('id', `${product.id}`)
+    li.setAttribute('class', 'class=card')
+  }
 }
 
- //Funcion de agregar
-function agregar(id){
-    /* let search = products.find(product=> product.id === id)
-    cart.push(search) */
-    const existe = cart.some(product => product.id === id)
-    if (existe){
-      Swal.fire({
-        title: 'El producto ya fue agregado al carrito',
-        icon: 'advertencia',
-        confirmButtonText: 'ok'
-      })('El producto ya fue agregado al carrito')
-    } else {
-        const productBuy = products.find(product => product.id === id)
-        cart.push(productBuy)
-        localStorage.setItem("carrito", JSON.stringify(cart))
-    }
+//Funcion de agregar
+async function agregar(id) {
+  let product = await fetch(`https://neon-efficient-bosworth.glitch.me/products/${id}`)
+  product = await product.json()
+  const existe = cart.some(product => product.id === id)
+  if (existe) {
+    Swal.fire({
+      title: 'El producto ya fue agregado al carrito',
+      icon: 'advertencia',
+      confirmButtonText: 'ok'
+    })('El producto ya fue agregado al carrito')
+  } else {
+    cart.push(product)
+    localStorage.setItem("carrito", JSON.stringify(cart))
+  }
 }
 
 //Funcion de mostrar el carrito
-function cartProducts(){
-    ul.remove();
-    ul = document.createElement('ul')
-    divBody.append(ul)
-    for (const product of cart) {
-        let li = document.createElement('li')
-        li.innerHTML =
-        `<h3>${product.name}<h3/>
+function cartProducts() {
+  ul.remove();
+  ul = document.createElement('ul')
+  divBody.append(ul)
+  for (const product of cart) {
+    let li = document.createElement('li')
+    li.innerHTML =
+      `<h3>${product.name}<h3/>
          <img src="${product.img.front}" alt="${product.name}" />
          <p>${product.description}</P>
                  <p class="precio">Precio $${product.price}</p>
                  <button id=${product.id} class="button" onclick=quitar(${product.id}) >Quitar</button>`
-        ul.append(li)
-        li.setAttribute('id', `${product.id}`)
-        li.setAttribute('class', 'class=card')
-     }
-    localStorage.setItem("page", "carrito")
+    ul.append(li)
+    li.setAttribute('id', `${product.id}`)
+    li.setAttribute('class', 'class=card')
+  }
+  localStorage.setItem("page", "carrito")
 }
 
 //Funcion quitar productos
-function quitar(id){
-    cart = cart.filter(product=> product.id !== id)
-    localStorage.setItem("carrito", JSON.stringify(cart))
-    cartProducts()
+function quitar(id) {
+  cart = cart.filter(product => product.id !== id)
+  localStorage.setItem("carrito", JSON.stringify(cart))
+  cartProducts()
 }
 
 //Funcion de Filtrado
-function selectLicence(licence){
-    filtros = products.filter(product => product.licence === licence)
-    localStorage.setItem("filtros", JSON.stringify(filtros))
-    allProducts(filtros)
-    localStorage.setItem("page", "filtrado")
+async function selectLicence(licence) {
+  filtros = await fetch(`https://neon-efficient-bosworth.glitch.me/category/${licence}`)
+  filtros = await filtros.json()
+  localStorage.setItem("filtros", JSON.stringify(filtros))
+  allProducts(filtros)
+  localStorage.setItem("page", "filtrado")
 }
 
 
-function btnproductos(){
+async function btnproductos() {
+  let products = await fetch('https://neon-efficient-bosworth.glitch.me/products')
+  products = await products.json()
   allProducts(products)
   localStorage.setItem("page", "home")
 }
 
-if (pagina == 'home') allProducts(products)
-if (pagina == 'carrito') cartProducts()
-if (pagina == 'filtrado') allProducts(filtros)
+productAsync()
+
+
+async function go() {
+  let products = await fetch('https://neon-efficient-bosworth.glitch.me/products')
+  products = await products.json()
+  if (pagina == 'home') allProducts(products)
+  if (pagina == 'carrito') cartProducts()
+  if (pagina == 'filtrado') allProducts(filtros)
+}
+
+go()
