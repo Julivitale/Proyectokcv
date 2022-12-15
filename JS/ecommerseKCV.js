@@ -1,81 +1,4 @@
-//Array de productos
-/* const products = [
-  {
-    id: 1,
-    collection: "cursodeingenieria",
-    licence: "Ingeniería",
-    name: "Curso de Ingenieria",
-    description: "Curso corto e intensivo sobre las ramas de la ingeniería para orientación",
-    img: {
-      front: "./img/curso-ingenieria.jpg",
-    },
-    sku: "KCV01",
-    price: 7000,
-    dues: 3,
-    stock: 15,
-    sells: 0
-  },
-  {
-    id: 2,
-    collection: "cursodegestiónymanagement",
-    licence: "Gestión",
-    name: "Cursos de Gestión y Management",
-    description: "En este curso se busca potenciar la productividad y competitividad de una empresa planeando, organizando, dirigiendo y controlando eficientemente sus recursos.",
-    img: {
-      front: "./img/Curso-managment.jpg"
-    },
-    sku: "KCV02",
-    price: 25000,
-    dues: 6,
-    stock: 10,
-    sells: 5
-  },
-  {
-    id: 3,
-    collection: "cursodegestiónempresarial",
-    licence: "Gestión",
-    name: "Curso de Gestión empresarial",
-    description: "En dicho curso, se incorporarán nociones de comercialización, cálculo de costos, estimación de la demanda, identificación de la competencia, análisis de la oferta de bienes y equipos necesarios para la prestación del servicio o la producción de bienes, plan de inversión y plan de negocios.",
-    img: {
-      front: "./img/Curso-gestiondeempresa.jpg"
-    },
-    sku: "KCV03",
-    price: 20000,
-    dues: 6,
-    stock: 15,
-    sells: 5
-  },
-  {
-    id: 4,
-    collection: "cursodeexcel",
-    licence: "Excel",
-    name: "Curso de Excel",
-    description: "Al finalizar el curso, los participan-tes podrán comprender los principales conceptos que se utilizan en Excel, así como su uso práctico orientado al análisis de bases datos, operaciones matemáticas y funciones avanzadas.",
-    img: {
-      front: "./img/Curso-excell.jpg"
-    },
-    sku: "KCV04",
-    price: 7000,
-    dues: 6,
-    stock: 20,
-    sells: 17
-  },
-  {
-    id: 4,
-    collection: "cursodeexcelavanzao",
-    licence: "Excel",
-    name: "Curso de Excel Avanzado",
-    description: "Analiza y filtra datos incluyendo técnicas avanzadas de cálculos. Realiza tablas robustas con funciones combinadas y domina un requisito elemental del mundo laboral.",
-    img: {
-      front: "./img/curso-excelavanzado.jpg"
-    },
-    sku: "KCV04",
-    price: 10000,
-    dues: 6,
-    stock: 20,
-    sells: 17
-  }
-] */
+
 
 //Div Botones
 const divButton = document.createElement('div')
@@ -154,7 +77,7 @@ localStorage.getItem('page')?.length > 0 ? localStorage.getItem('page') : localS
 //Div del bodys
 let divBody = document.createElement('div')
 document.body.append(divBody)
-divBody.setAttribute('class', 'divBody') // 2 parametros 1- el atributo 2-nombre o valor
+divBody.setAttribute('class', 'divBody')
 
 //Crear lista
 let ul = document.createElement('ul')
@@ -241,8 +164,6 @@ async function btnproductos() {
   allProducts(products)
   localStorage.setItem("page", "home")
 }
-
-productAsync()
 
 
 async function go() {
